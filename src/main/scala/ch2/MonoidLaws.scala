@@ -118,7 +118,6 @@ object MonoidLaws extends App {
   println(s"Monoid:\n$textInBox2")
 
 
-
   //╭───────────────────────╮
   //│ 5. Reuse              │
   //╰───────────────────────╯
@@ -132,16 +131,19 @@ object MonoidLaws extends App {
 
   println(s"betweenM(1.some, 2.some, 3.some): ${betweenM(1.some, 2.some, 3.some)}")
   println(s"betweenM(1.some, None, 3.some): ${betweenM(1.some, none[Int], 3.some)}")
-//  List(1.some, none[Int], 3.some).flatMap(_.toList).sum
-//  List(1.some, none[Int], 3.some).map(_.getOrElse(0)).sum
+  //  List(1.some, none[Int], 3.some).flatMap(_.toList).sum
+  //  List(1.some, none[Int], 3.some).map(_.getOrElse(0)).sum
 
   import cats.instances.list._
 
   println(s"betweenM(List(0), List(1, 2, 1), List(0)): ${betweenM(List(0), List(1, 2, 1), List(0))}")
 
 
+
+
+
   //╭─────────────────────────────────────────────────────────╮
-  //│ 6. Based on https://www.youtube.com/watch?v=VzNGF4V937o │
+  //│ 7. Based on https://www.youtube.com/watch?v=VzNGF4V937o │
   //╰─────────────────────────────────────────────────────────╯
 
 }

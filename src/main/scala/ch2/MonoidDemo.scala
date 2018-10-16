@@ -1,5 +1,6 @@
 package ch2
 
+import cats.Monoid
 import cats.instances.list._
 import cats.kernel.Semigroup
 import cats.syntax.semigroup._
@@ -100,6 +101,7 @@ object MonoidDemo extends App {
 
   Futures.test()
 
+
   object Tries {
 
 
@@ -128,11 +130,69 @@ object MonoidDemo extends App {
       println(try1 |+| try2)
       println(try1 |+| tryError1)
       println(tryError1 |+| tryError2)
-      println(tryError1 |+| tryError2|+| tryError3)
-      println(tryError1 |+| (tryError2|+| tryError3))
+      println(tryError1 |+| tryError2 |+| tryError3)
+      println(tryError1 |+| (tryError2 |+| tryError3))
       println(tryError1 |+| try1)
     }
   }
+
   Tries.test()
+
+
+  //╭───────────────────────╮
+  //│  More instances       │
+  //╰───────────────────────╯
+
+  object MoreInstances {
+
+
+    object IntMonoids {
+      implicit val sum = new Monoid[Int] {
+        override def empty: Int = 0
+
+        override def combine(x: Int, y: Int): Int = x + y
+      }
+      implicit val product = new Monoid[Int] {
+        override def empty: Int = 1
+
+        override def combine(x: Int, y: Int): Int = x * y
+      }
+    }
+
+
+    def sum(ints: Int*): Int = {
+      implicit val intMonoid = IntMonoids.sum
+      val empty: Int = implicitly[Monoid[Int]].empty
+      ints.foldLeft(empty)((acc, i) => acc |+| i)
+    }
+
+    def product(ints: Int*): Int = {
+      implicit val intMonoid = IntMonoids.product
+      val empty: Int = implicitly[Monoid[Int]].empty
+      ints.foldLeft(empty)((acc, i) => acc |+| i)
+    }
+
+//    def sum(ints:Int*):Int = {
+//      implicit val intMonoid = IntMonoids.sum
+//      doMath(ints)
+//    }
+//
+//    def product(ints:Int*):Int = {
+//      implicit val intMonoid = IntMonoids.product
+//      doMath(ints)
+//    }
+//
+//    def doMath(ints: Seq[Int])(implicit monoid: Monoid[Int]): Int = {
+//      ints.foldLeft(monoid.empty)((acc, i) => acc |+| i)
+//    }
+
+    def test(): Unit = {
+      println("\n\nMore instances:")
+      println(s"Sum      ${sum(1, 2, 3)}")
+      println(s"Product  ${product(1, 2, 3)}")
+    }
+  }
+
+  MoreInstances.test()
 
 }
