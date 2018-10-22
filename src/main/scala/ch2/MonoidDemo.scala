@@ -71,7 +71,7 @@ object MonoidDemo extends App {
     def test(): Unit = {
       println("\n\nFutures:")
 
-      val r1 = for {
+      val r1: Future[List[Int]] = for {
         f1 <- loadFrom1()
         f2 <- loadFrom2()
       } yield f1 |+| f2
@@ -160,31 +160,31 @@ object MonoidDemo extends App {
     }
 
 
-    def sum(ints: Int*): Int = {
-      implicit val intMonoid = IntMonoids.sum
-      val empty: Int = implicitly[Monoid[Int]].empty
-      ints.foldLeft(empty)((acc, i) => acc |+| i)
-    }
-
-    def product(ints: Int*): Int = {
-      implicit val intMonoid = IntMonoids.product
-      val empty: Int = implicitly[Monoid[Int]].empty
-      ints.foldLeft(empty)((acc, i) => acc |+| i)
-    }
-
-//    def sum(ints:Int*):Int = {
+//    def sum(ints: Int*): Int = {
 //      implicit val intMonoid = IntMonoids.sum
-//      doMath(ints)
+//      val empty: Int = implicitly[Monoid[Int]].empty
+//      ints.foldLeft(empty)((acc, i) => acc |+| i)
 //    }
 //
-//    def product(ints:Int*):Int = {
+//    def product(ints: Int*): Int = {
 //      implicit val intMonoid = IntMonoids.product
-//      doMath(ints)
+//      val empty: Int = implicitly[Monoid[Int]].empty
+//      ints.foldLeft(empty)((acc, i) => acc |+| i)
 //    }
-//
-//    def doMath(ints: Seq[Int])(implicit monoid: Monoid[Int]): Int = {
-//      ints.foldLeft(monoid.empty)((acc, i) => acc |+| i)
-//    }
+
+    def sum(ints:Int*):Int = {
+      implicit val intMonoid = IntMonoids.sum
+      doMath(ints)
+    }
+
+    def product(ints:Int*):Int = {
+      implicit val intMonoid = IntMonoids.product
+      doMath(ints)
+    }
+
+    def doMath(ints: Seq[Int])(implicit monoid: Monoid[Int]): Int = {
+      ints.foldLeft(monoid.empty)(monoid.combine)
+    }
 
     def test(): Unit = {
       println("\n\nMore instances:")
