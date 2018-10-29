@@ -127,7 +127,7 @@ object FunctorExample extends App {
   // │  Generic functor    │
   // ╰─────────────────────╯
 
-  println("\nGeneric functor")
+  println("Generic functor".inBox())
   private val countCharsFunction: String => Int = _.length
 
   println(List("a", "bc", "def").map(countCharsFunction))
